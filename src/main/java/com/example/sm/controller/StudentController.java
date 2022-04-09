@@ -1,8 +1,6 @@
 package com.example.sm.controller;
 
-import com.example.sm.dto.CourseDTO;
 import com.example.sm.dto.StudentDTO;
-import com.example.sm.model.Course;
 import com.example.sm.model.StudentCourse;
 import com.example.sm.service.CollegeService;
 import com.example.sm.service.CourseService;
@@ -22,10 +20,7 @@ import java.util.List;
 public class StudentController {
 
 	@Autowired
-	StudentService studentService;
-	
-	@Autowired
-	CourseService courseService;
+	private StudentService studentService;
 
 	@Autowired
 	StudentCourseService studentCourseService;

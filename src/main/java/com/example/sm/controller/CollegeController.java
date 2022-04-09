@@ -48,7 +48,7 @@ public class CollegeController {
 	}
 
 	@PostMapping()
-	public CollegeDTO addToCollegs(@Valid @RequestBody CollegeDTO collegeDTO) {
+	public CollegeDTO addToColleges(@Valid @RequestBody CollegeDTO collegeDTO) {
 
 		CollegeDTO college = collegeService.add(collegeDTO);
 		Link link = WebMvcLinkBuilder.linkTo(CollegeController.class).slash(college.getId()).withSelfRel();

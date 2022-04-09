@@ -41,6 +41,7 @@ public class Admin extends User {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (!(obj instanceof Admin)) return false;
 		Admin other = (Admin) obj;
 		return this.Id == other.Id;
 	}

@@ -87,6 +87,10 @@ public class Course {
 		this.studentCourses.add(studentCourse);
 	}
 
+	public void setStudentCourses(List<StudentCourse> studentCourses) {
+		this.studentCourses = studentCourses;
+	}
+
 	@Override
 	public String toString() {
 		return "Course [Id=" + Id + ", name=" + name + ", unit=" + unit + "]";

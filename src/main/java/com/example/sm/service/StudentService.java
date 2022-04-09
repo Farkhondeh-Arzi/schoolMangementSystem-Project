@@ -21,7 +21,7 @@ import java.util.List;
 public class StudentService implements ServiceInterface<StudentDTO> {
 
     @Autowired
-    StudentRepo studentRepo;
+    private StudentRepo studentRepo;
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -34,7 +34,6 @@ public class StudentService implements ServiceInterface<StudentDTO> {
 
     @Override
     public List<StudentDTO> getAll() {
-
         return studentConvertor.convertAllToDTO(studentRepo.findAll());
     }
 
