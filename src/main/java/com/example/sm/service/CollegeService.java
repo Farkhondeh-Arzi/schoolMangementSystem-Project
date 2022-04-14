@@ -1,6 +1,6 @@
 package com.example.sm.service;
 
-import com.example.sm.convertos.CollegeConvertor;
+import com.example.sm.convertos.Convertor;
 import com.example.sm.dao.CollegeRepo;
 import com.example.sm.dto.CollegeDTO;
 import com.example.sm.exception.RecordNotFoundException;
@@ -14,21 +14,20 @@ import java.util.List;
 public class CollegeService implements ServiceInterface<CollegeDTO> {
 
     @Autowired
-    CollegeRepo collegeRepo;
+    private CollegeRepo collegeRepo;
 
     @Autowired
-    CollegeConvertor collegeConvertor;
+    private Convertor<College, CollegeDTO> convertor;
 
     @Override
     public List<CollegeDTO> getAll() {
 
-        return collegeConvertor.convertAllToDTO(collegeRepo.findAll());
+        return convertor.convertAllToDTO(collegeRepo.findAll(), CollegeDTO.class);
     }
 
     @Override
     public CollegeDTO add(CollegeDTO collegeDTO) {
-        College college = new College();
-        collegeConvertor.convertToEntity(college, collegeDTO);
+        College college = convertor.convertToEntity(new College(), collegeDTO);
 
         collegeRepo.save(college);
 
@@ -41,7 +40,7 @@ public class CollegeService implements ServiceInterface<CollegeDTO> {
         if (college == null)
             throw new RecordNotFoundException("Not valid ID");
 
-        return collegeConvertor.convertToDTO(college);
+        return convertor.convertToDTO(college, new CollegeDTO());
     }
 
     @Override
@@ -50,7 +49,7 @@ public class CollegeService implements ServiceInterface<CollegeDTO> {
         if (college == null)
             throw new RecordNotFoundException("Not valid ID");
 
-        collegeConvertor.convertToEntity(college, collegeDTO);
+        convertor.convertToEntity(college, collegeDTO);
         collegeRepo.save(college);
 
         return collegeDTO;

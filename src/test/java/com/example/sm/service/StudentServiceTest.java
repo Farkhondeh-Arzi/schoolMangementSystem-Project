@@ -1,8 +1,9 @@
 package com.example.sm.service;
 
-import com.example.sm.convertos.StudentConvertor;
+import com.example.sm.convertos.Convertor;
 import com.example.sm.dao.CollegeRepo;
 import com.example.sm.dao.StudentRepo;
+import com.example.sm.dto.StudentDTO;
 import com.example.sm.model.Course;
 import com.example.sm.model.Student;
 import com.example.sm.model.StudentCourse;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -32,7 +32,7 @@ class StudentServiceTest {
     private StudentRepo studentRepo;
 
     @Mock
-    private StudentConvertor studentConvertor;
+    private Convertor<Student, StudentDTO> studentConvertor;
 
     @Mock
     CollegeRepo collegeRepo;
@@ -56,7 +56,7 @@ class StudentServiceTest {
     void add() {
         Student student = new Student();
 
-        studentService.add(studentConvertor.convertToDTO(student));
+        studentService.add(studentConvertor.convertToDTO(student, new StudentDTO()));
 
         verify(studentRepo, atLeast(1)).save(studentCaptor.capture());
 
@@ -78,7 +78,7 @@ class StudentServiceTest {
 
         given(studentRepo.findById(anyInt())).willReturn(java.util.Optional.of(new Student()));
 
-        studentService.update(studentConvertor.convertToDTO(student), 1);
+        studentService.update(studentConvertor.convertToDTO(student, new StudentDTO()), 1);
 
         verify(studentRepo, atLeast(1)).save(studentCaptor.capture());
 

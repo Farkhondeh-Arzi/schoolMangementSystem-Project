@@ -1,8 +1,6 @@
 package com.example.sm.service;
 
-import com.example.sm.convertos.CourseConvertor;
-import com.example.sm.convertos.ProfessorConvertor;
-import com.example.sm.convertos.StudentConvertor;
+import com.example.sm.convertos.Convertor;
 import com.example.sm.dao.CollegeRepo;
 import com.example.sm.dao.ProfessorRepo;
 import com.example.sm.dto.CourseDTO;
@@ -37,18 +35,19 @@ public class ProfessorService implements ServiceInterface<ProfessorDTO> {
     BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    ProfessorConvertor professorConvertor;
+    Convertor<Professor, ProfessorDTO> professorConvertor;
+
 
     @Autowired
-    StudentConvertor studentConvertor;
+    Convertor<Student, StudentDTO> studentConvertor;
 
     @Autowired
-    CourseConvertor courseConvertor;
+    Convertor<Course, CourseDTO> courseConvertor;
 
     @Override
     public List<ProfessorDTO> getAll() {
 
-        return professorConvertor.convertAllToDTO(profRepo.findAll());
+        return professorConvertor.convertAllToDTO(profRepo.findAll(), ProfessorDTO.class);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class ProfessorService implements ServiceInterface<ProfessorDTO> {
         Professor professor = profRepo.findById(Id).orElse(null);
         if (professor == null) throw new RecordNotFoundException("Not valid ID");
 
-        return professorConvertor.convertToDTO(professor);
+        return professorConvertor.convertToDTO(professor, new ProfessorDTO());
     }
 
     @Override
@@ -90,7 +89,7 @@ public class ProfessorService implements ServiceInterface<ProfessorDTO> {
         Professor professor = getProfessor(Id);
         professor.setProfile(file.getBytes());
 
-        return professorConvertor.convertToDTO(professor);
+        return professorConvertor.convertToDTO(professor, new ProfessorDTO());
     }
 
     @Override
@@ -103,7 +102,7 @@ public class ProfessorService implements ServiceInterface<ProfessorDTO> {
 
     public List<StudentDTO> getStudentDTOs(int Id) {
 
-        return studentConvertor.convertAllToDTO(getStudents(Id));
+        return studentConvertor.convertAllToDTO(getStudents(Id), StudentDTO.class);
     }
 
     private List<Student> getStudents(int Id) {
@@ -124,7 +123,7 @@ public class ProfessorService implements ServiceInterface<ProfessorDTO> {
     }
 
     public List<CourseDTO> getCourseDTOs(int profId) {
-        return courseConvertor.convertAllToDTO(getProfessor(profId).getCourses());
+        return courseConvertor.convertAllToDTO(getProfessor(profId).getCourses(), CourseDTO.class);
     }
 
     private List<Course> getCourses(int profId) {
@@ -159,9 +158,8 @@ public class ProfessorService implements ServiceInterface<ProfessorDTO> {
 
         List<Professor> professors = profRepo.findByCollege(collegeRepo.findById(collegeId).orElse(null), pageable);
 
-        return professorConvertor.convertAllToDTO(professors);
+        return professorConvertor.convertAllToDTO(professors, ProfessorDTO.class);
     }
-
 
     private Professor getProfessor(int Id) {
         Professor professor = profRepo.findById(Id).orElse(null);

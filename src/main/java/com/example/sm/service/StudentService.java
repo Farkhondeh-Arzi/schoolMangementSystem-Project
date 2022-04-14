@@ -1,6 +1,6 @@
 package com.example.sm.service;
 
-import com.example.sm.convertos.StudentConvertor;
+import com.example.sm.convertos.Convertor;
 import com.example.sm.dao.CollegeRepo;
 import com.example.sm.dao.StudentRepo;
 import com.example.sm.dto.StudentDTO;
@@ -24,17 +24,17 @@ public class StudentService implements ServiceInterface<StudentDTO> {
     private StudentRepo studentRepo;
 
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    CollegeRepo collegeRepo;
+    private CollegeRepo collegeRepo;
 
     @Autowired
-    StudentConvertor studentConvertor;
+    private Convertor<Student, StudentDTO> studentConvertor;
 
     @Override
     public List<StudentDTO> getAll() {
-        return studentConvertor.convertAllToDTO(studentRepo.findAll());
+        return studentConvertor.convertAllToDTO(studentRepo.findAll(), StudentDTO.class);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class StudentService implements ServiceInterface<StudentDTO> {
         Student student = studentRepo.findById(Id).orElse(null);
         if (student == null) throw new RecordNotFoundException("Not valid ID");
 
-        return studentConvertor.convertToDTO(student);
+        return studentConvertor.convertToDTO(student, new StudentDTO());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class StudentService implements ServiceInterface<StudentDTO> {
 
         studentRepo.save(student);
 
-        return studentConvertor.convertToDTO(student);
+        return studentConvertor.convertToDTO(student, new StudentDTO());
     }
 
     @Override
@@ -109,7 +109,7 @@ public class StudentService implements ServiceInterface<StudentDTO> {
     public List<StudentDTO> getByCollege(int collegeId, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         List<Student> students = studentRepo.findByCollege(collegeRepo.findById(collegeId).orElse(null), pageable);
-        return studentConvertor.convertAllToDTO(students);
+        return studentConvertor.convertAllToDTO(students, StudentDTO.class);
     }
 
     private Student getStudent(int Id) {

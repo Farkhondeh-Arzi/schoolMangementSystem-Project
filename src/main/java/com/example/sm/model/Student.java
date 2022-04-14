@@ -45,6 +45,9 @@ public class Student extends User {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (!(obj instanceof Student)) {
+			return false;
+		}
 		Student other = (Student)(obj);
 		return this.Id == other.Id;
 	}

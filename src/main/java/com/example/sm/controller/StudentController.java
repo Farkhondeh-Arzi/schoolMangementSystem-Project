@@ -3,7 +3,6 @@ package com.example.sm.controller;
 import com.example.sm.dto.StudentDTO;
 import com.example.sm.model.StudentCourse;
 import com.example.sm.service.CollegeService;
-import com.example.sm.service.CourseService;
 import com.example.sm.service.StudentCourseService;
 import com.example.sm.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
