@@ -1,4 +1,4 @@
-package com.example.sm.convertos;
+package com.example.sm.convertors;
 
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Component;
@@ -53,7 +53,7 @@ public class Convertor<T, DTO> {
                             if (entityToDTO) {
                                 dtoMethod.invoke(setterArgument, value);
                             } else {
-                                entityMethod.invoke(setterArgument);
+                                entityMethod.invoke(setterArgument, value);
                             }
                             break;
                         } catch (InvocationTargetException | IllegalAccessException e) {

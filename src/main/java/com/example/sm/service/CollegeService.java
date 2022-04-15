@@ -1,6 +1,6 @@
 package com.example.sm.service;
 
-import com.example.sm.convertos.Convertor;
+import com.example.sm.convertors.Convertor;
 import com.example.sm.dao.CollegeRepo;
 import com.example.sm.dto.CollegeDTO;
 import com.example.sm.exception.RecordNotFoundException;

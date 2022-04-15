@@ -1,9 +1,8 @@
 package com.example.sm.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.example.sm.convertos.Convertor;
+import com.example.sm.convertors.Convertor;
 import com.example.sm.dao.CollegeRepo;
 import com.example.sm.dto.CourseDTO;
 import com.example.sm.model.College;
