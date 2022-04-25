@@ -1,7 +1,6 @@
 package com.example.sm.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 @MappedSuperclass
-public class User extends RepresentationModel<User> implements UserDetails {
+public class User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 

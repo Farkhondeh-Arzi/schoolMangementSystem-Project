@@ -1,6 +1,7 @@
 
 package com.example.sm.dao;
 
+import com.example.sm.model.Admin;
 import com.example.sm.model.Professor;
 import com.example.sm.model.Student;
 import com.example.sm.model.User;
@@ -15,11 +16,13 @@ public class UserRepo {
 	private final StudentRepo studentRepo;
 	private final ProfessorRepo profRepo;
 	private final AdminRepo adminRepo;
+	private final ManagerRepo managerRepo;
 	
-	public UserRepo(StudentRepo studentRepo, ProfessorRepo profRepo, AdminRepo adminRepo) {
+	public UserRepo(StudentRepo studentRepo, ProfessorRepo profRepo, AdminRepo adminRepo, ManagerRepo managerRepo) {
 		this.studentRepo = studentRepo;
 		this.profRepo = profRepo;
 		this.adminRepo = adminRepo;
+		this.managerRepo = managerRepo;
 	}
 
 	public User findByUsername(String username) {
@@ -27,7 +30,9 @@ public class UserRepo {
 		if (student != null) return student;
 		Professor prof = profRepo.findByUsername(username);
 		if (prof != null) return prof;
-		return adminRepo.findByUsername(username);
+		Admin admin = adminRepo.findByUsername(username);
+		if (admin != null) return admin;
+		return managerRepo.findByUsername(username);
 	}
 
 	public List<User> findAll() {

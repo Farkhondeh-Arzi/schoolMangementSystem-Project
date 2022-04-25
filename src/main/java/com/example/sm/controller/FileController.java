@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,8 +16,6 @@ public class FileController {
 	UserService userService;
 
 	@PostMapping(value = {"student/{userId}/upload", "prof/{userId}/upload"})
-	@PreAuthorize("(hasAuthority('STUDENT') and @userSecurity.hasUserId(authentication, #userId))" +
-			"or (hasAuthority('PROFESSOR') and @userSecurity.hasUserId(authentication, #userId))")
 	public ResponseEntity<ResponseMessage> uploadFile(@PathVariable int userId, @RequestParam("file") MultipartFile file) {
 		String message;
 		try {
@@ -32,8 +29,6 @@ public class FileController {
 	}
 
 	@GetMapping(value = {"student/{userId}/profile", "prof/{userId}/profile"})
-	@PreAuthorize("(hasAuthority('STUDENT') and @userSecurity.hasUserId(authentication, #userId))" +
-			"or (hasAuthority('PROFESSOR') and @userSecurity.hasUserId(authentication, #userId))")
 	public ResponseEntity<byte[]> getFile(@PathVariable int userId) {
 		byte[] data = userService.get(userId).getProfile();
 		return ResponseEntity.ok()

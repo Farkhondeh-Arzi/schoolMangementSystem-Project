@@ -3,16 +3,15 @@ package com.example.sm.controller;
 import com.example.sm.dto.CourseDTO;
 import com.example.sm.dto.ProfessorDTO;
 import com.example.sm.dto.StudentDTO;
-import com.example.sm.service.*;
+import com.example.sm.service.ProfessorService;
+import com.example.sm.service.StudentCourseService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 public class ProfessorController {
@@ -29,7 +28,6 @@ public class ProfessorController {
 	}
 
 	@GetMapping("/colleges/{collegeId}/profs")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public CollectionModel<ProfessorDTO> getAll(@PathVariable int collegeId,
 											 @RequestParam(defaultValue = "0") Integer pageNo,
 											 @RequestParam(defaultValue = "10") Integer pageSize) {
@@ -64,26 +62,22 @@ public class ProfessorController {
 	}
 
 	@PostMapping("/colleges/{collegeId}/profs")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public ProfessorDTO addToProfs(@Valid @RequestBody ProfessorDTO profDTO) {
 
 		return profService.add(profDTO);
 	}
 
 	@PutMapping("/colleges/{collegeId}/profs/{Id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public ProfessorDTO updateProf(@RequestBody ProfessorDTO profDTO, @PathVariable int Id) {
 		return profService.update(profDTO, Id);
 	}
 
 	@DeleteMapping("/colleges/{collegeId}/profs/{Id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public void deleteProf(@PathVariable int Id) {
 		profService.delete(Id);
 	}
 
-	@GetMapping("prof/{profId}")
-	@PreAuthorize("hasAuthority('PROFESSOR') and @userSecurity.hasUserId(authentication, #studentId)")
+	@GetMapping("profs/{profId}")
 	public ProfessorDTO getProf(@PathVariable int profId) {
 
 		ProfessorDTO prof = profService.get(profId);
@@ -105,22 +99,19 @@ public class ProfessorController {
 		return prof;
 	}
 
-	@GetMapping("prof/{profId}/students")
-	@PreAuthorize("hasAuthority('PROFESSOR') and @userSecurity.hasUserId(authentication, #studentId)")
+	@GetMapping("profs/{profId}/students")
 	public List<StudentDTO> getStudents(@PathVariable int profId) {
 
 		return profService.getStudentDTOs(profId);
 	}
 
-	@GetMapping("prof/{profId}/courses")
-	@PreAuthorize("hasAuthority('PROFESSOR') and @userSecurity.hasUserId(authentication, #studentId)")
+	@GetMapping("profs/{profId}/courses")
 	public List<CourseDTO> getCourses(@PathVariable int profId) {
 
 		return profService.getCourseDTOs(profId);
 	}
 
-	@PutMapping("prof/{profId}/setGrade")
-	@PreAuthorize("hasAuthority('PROFESSOR') and @userSecurity.hasUserId(authentication, #studentId)")
+	@PutMapping("profs/{profId}/setGrade")
 	public void setGrade(@RequestBody List<Integer> details) {
 
 		int studentId = details.get(0);
@@ -129,8 +120,7 @@ public class ProfessorController {
 		studentCourseService.updateGrade(studentId, courseId, grade);
 	}
 
-	@GetMapping("prof/{Id}/students/average")
-	@PreAuthorize("hasAuthority('PROFESSOR') and @userSecurity.hasUserId(authentication, #studentId)")
+	@GetMapping("profs/{Id}/students/average")
 	public float getStudentsAverage(@PathVariable int Id) {
 		return profService.getStudentsAverage(Id);
 	}

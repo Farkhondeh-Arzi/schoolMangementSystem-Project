@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,7 +27,6 @@ public class StudentController {
 	CollegeService collegeService;
 	
 	@GetMapping("/colleges/{collegeId}/students")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public CollectionModel<StudentDTO> getAll(@PathVariable int collegeId,
 										   @RequestParam(defaultValue = "0") Integer pageNo,
 										   @RequestParam(defaultValue = "10") Integer pageSize) {
@@ -55,7 +53,6 @@ public class StudentController {
 	}
 	
 	@PostMapping("/colleges/{collegeId}/students")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public StudentDTO addToStudents(@Valid @RequestBody StudentDTO studentDTO) {
 		
 		//the repository sets Id after adding it
@@ -64,19 +61,16 @@ public class StudentController {
 	}
 	
 	@PutMapping("/colleges/{collegeId}/{studentId}")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public StudentDTO updateStudent(@Valid @RequestBody StudentDTO studentDTO, @PathVariable int studentId) {
 		return studentService.update(studentDTO, studentId);
 	}
 	
 	@DeleteMapping("/colleges/{collegeId}/{studentId}")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public void deleteStudent(@PathVariable int studentId) {
 		studentService.delete(studentId);
 	}
 	
 	@GetMapping("student/{studentId}")
-	@PreAuthorize("hasAuthority('STUDENT') and @userSecurity.hasUserId(authentication, #studentId)")
 	public StudentDTO getStudent(@PathVariable int studentId) {
 		StudentDTO student = studentService.get(studentId);
 		Link courseLink =  WebMvcLinkBuilder.linkTo(StudentController.class)
@@ -89,15 +83,13 @@ public class StudentController {
 		return student;
 	}
 	
-	@PutMapping("student/{studentId}/addCourse") 
-	@PreAuthorize("hasAuthority('STUDENT') and @userSecurity.hasUserId(authentication, #studentId)")
+	@PutMapping("student/{studentId}/addCourse")
 	public StudentCourse addToStudentCourses(@PathVariable int studentId, @RequestBody int courseId) {
 
 		return studentCourseService.add(studentId, courseId);
 	}
 	
 	@GetMapping("student/{studentId}/average")
-	@PreAuthorize("hasAuthority('STUDENT') and @userSecurity.hasUserId(authentication, #studentId)")
 	public float getAverage(@PathVariable int studentId) {
 		
 		return studentService.getAverage(studentId);
