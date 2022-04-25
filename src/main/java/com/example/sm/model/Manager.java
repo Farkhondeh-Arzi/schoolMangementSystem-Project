@@ -1,0 +1,50 @@
+package com.example.sm.model;
+
+import javax.persistence.*;
+
+@Entity
+public class Manager extends User {
+
+    @Column(name = "first_name")
+    private String forename;
+
+    @Column(name = "last_name")
+    private String surname;
+
+    @Column(name = "national_number", unique = true)
+    private long nationalNumber;
+
+    //Setter and Getter
+    public String getForename() {
+        return forename;
+    }
+
+    public void setForename(String forename) {
+        this.forename = forename;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public long getNationalNumber() {
+        return nationalNumber;
+    }
+
+    public void setNationalNumber(long nationalNumber) {
+        this.nationalNumber = nationalNumber;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Manager)) return false;
+        Manager other = (Manager) obj;
+        return this.Id == other.Id;
+    }
+}
+
+
